@@ -1,1 +1,2 @@
-export const purple = '#8e44ad'
+export const purple = '#522764'
+export const darkPurple = '#160a1b' 
