@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {purple} from '../utils/colors'
+import {clearNotification, setNotification} from '../utils/helpers'
 
 
-export default class Quiz extends Component {
-
+export default class Result extends Component {
+    componentDidMount() {
+        clearNotification()
+        setNotification();
+    }
     render() {
         const {score, totalQuestions, goBack, restart} = this.props
         return (

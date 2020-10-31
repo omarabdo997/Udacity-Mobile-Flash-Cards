@@ -18,8 +18,6 @@ class Decks extends Component {
               {Object.keys(decks).map(key => (
                   <Deck key={key} id={key} navigation={navigation}></Deck>
               ))}  
-              
-              <Text>{JSON.stringify(decks)}</Text>
             </ScrollView>
         )
     } 

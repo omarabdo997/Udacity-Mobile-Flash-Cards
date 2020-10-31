@@ -16,7 +16,6 @@ class AddDeck extends Component {
     }
 
     onSubmit = () => {
-        // alert(this.state.value)
         const name = this.state.value
         const deck = {[name]:{}}
         this.props.dispatch(addDeck(deck))
@@ -26,7 +25,7 @@ class AddDeck extends Component {
         Keyboard.dismiss()
         this.props.navigation.navigate('DeckDetail', {id:name})
     }
-    
+
     render() {
         const {value} = this.state
         return (

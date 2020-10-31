@@ -6,6 +6,7 @@ import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import decks from './reducers'
 import thunk from 'redux-thunk'
+import {setNotification} from './utils/helpers'
 
 
 const store = createStore(decks,applyMiddleware(thunk))
@@ -15,6 +16,9 @@ store.subscribe(() => {
 })
 
 export default class App extends Component {
+  componentDidMount() {
+    setNotification()
+  }
   render() {
     return (
         <Provider store={store}>
