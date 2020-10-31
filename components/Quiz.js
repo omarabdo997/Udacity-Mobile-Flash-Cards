@@ -1,22 +1,80 @@
 import React, { Component } from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Card from './Card'
+import Result from './Result'
+import {connect} from 'react-redux'
 
 
-export default class Quiz extends Component {
+class Quiz extends Component {
+
+    state = {
+        score: 0,
+        answeredQuestions: 0,
+
+    }
+
+    correctAnswer = () => {
+        this.setState((currentState) => ({
+            answeredQuestions: currentState.answeredQuestions+1,
+            score: currentState.score+1
+        }))
+    }
+
+    incorrectAnswer = () => {
+        this.setState((currentState) => ({
+            answeredQuestions: currentState.answeredQuestions+1,
+        }))
+    }
+
+    goBack = () => {
+        this.props.navigation.goBack()
+    }
+
+    restart = () => {
+        this.setState(() => ({
+            score: 0,
+            answeredQuestions: 0,
+        }))
+    }
+
     render() {
+        const {deck, navigation} = this.props
+        const {score, answeredQuestions} = this.state
+        const keys = Object.keys(deck)
+        const totalQuestions = keys.length
+        
+        if (totalQuestions < 1) {
+            return (
+                <View>
+                    <Text style={styles.primaryText}>There are no cards in this deck collection</Text>
+                </View>
+            )
+        }
+        if (totalQuestions === answeredQuestions) {
+            return (
+                <Result 
+                    score={score} 
+                    totalQuestions={totalQuestions} 
+                    goBack={this.goBack}
+                    restart={this.restart}
+                />
+            )
+        }
         return (
             <View style={styles.container}>
-                <Text style={styles.progressText}>5/8</Text>
+                <Text style={styles.progressText}>{answeredQuestions+1}/{totalQuestions}</Text>
                 <View style={{flex:10}}>
-                    <Card />
+                    <Card 
+                        question={keys[answeredQuestions]}
+                        answer={deck[keys[answeredQuestions]]}
+                    />
                 </View>
                
                 <View style={{flex:10}}>
-                    <TouchableOpacity style={styles.correctButton}>
+                    <TouchableOpacity style={styles.correctButton} onPress={this.correctAnswer}>
                         <Text style={styles.quizText}>Correct</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.incorrectButton}>
+                    <TouchableOpacity style={styles.incorrectButton} onPress={this.incorrectAnswer}>
                         <Text style={styles.quizText}>Incorrect</Text>
                     </TouchableOpacity>
                 </View>
@@ -32,6 +90,11 @@ const styles = StyleSheet.create({
        alignItems : 'center',
        marginBottom: 50,
        justifyContent: 'space-between'      
+    },
+    primaryText: {
+        fontSize: 50,
+        alignSelf: 'center',
+        padding: 20 
     },
     progressText: {
         fontSize: 30,
@@ -64,3 +127,12 @@ const styles = StyleSheet.create({
         borderRadius: 10
     }
 })
+
+function mapStateToProps(decks, {navigation}) {
+    return {
+        deck: decks[navigation.state.params.id],
+        navigation
+    }
+}
+
+export default connect(mapStateToProps)(Quiz)

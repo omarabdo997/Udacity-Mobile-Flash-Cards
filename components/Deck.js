@@ -1,14 +1,17 @@
 import React, {Component} from 'react'
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native'
+import {connect} from 'react-redux'
 
 
-
-export default class Deck extends Component {
+class Deck extends Component {
+    
     render() {
+        const {deck, id, navigation} = this.props
         return (
-            <TouchableOpacity style={styles.container} onPress={() => this.props.navigation.navigate('DeckDetail')}>
-                <Text style={styles.primaryText}>Deck0</Text>
-                <Text style={styles.secondaryText}>5 cards</Text>
+            <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('DeckDetail',
+            {id})}>
+                <Text style={styles.primaryText}>{id}</Text>
+                <Text style={styles.secondaryText}>{Object.keys(deck).length} cards</Text>
             </TouchableOpacity>
         )
     }
@@ -31,3 +34,13 @@ const styles = StyleSheet.create({
     },
     
 })
+
+function mapStateToProps(decks, {id, navigation}) {
+    return {
+        deck: decks[id],
+        id,
+        navigation
+    }
+}
+
+export default connect(mapStateToProps)(Deck)

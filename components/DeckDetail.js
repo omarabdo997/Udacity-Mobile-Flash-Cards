@@ -1,20 +1,31 @@
 import React, {Component} from 'react'
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native'
+import {connect} from 'react-redux'
 
 
-export default class DeckDetail extends Component {
+class DeckDetail extends Component {
+
+    static navigationOptions = ({navigation}) => {
+        const {id} = navigation.state.params
+        return {
+            title: id,
+            
+        }
+    }
+
     render() {
+        const {id, deck, navigation} = this.props
         return (
             <View style={styles.container}>
                 <View>
-                    <Text style={styles.primaryText}>Deck0</Text>
-                    <Text style={styles.secondaryText}>5 cards</Text>
+                    <Text style={styles.primaryText}>{id}</Text>
+                    <Text style={styles.secondaryText}>{Object.keys(deck).length} cards</Text>
                 </View>
                 <View>
-                    <TouchableOpacity style={styles.addButton} onPress={() => this.props.navigation.navigate('AddCard')}>
+                    <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('AddCard', {id})}>
                         <Text style={styles.addText}>Add Card</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.quizButton} onPress={() => this.props.navigation.navigate('Quiz')}>
+                    <TouchableOpacity style={styles.quizButton} onPress={() => navigation.navigate('Quiz', {id})}>
                         <Text style={styles.quizText}>Start Quiz</Text>
                     </TouchableOpacity>
                 </View>
@@ -33,7 +44,8 @@ const styles = StyleSheet.create({
        justifyContent: 'space-between'      
     },
     primaryText: {
-        fontSize: 85 
+        fontSize: 85,
+        alignSelf: 'center' 
     },
     secondaryText: {
         fontSize: 30,
@@ -67,3 +79,13 @@ const styles = StyleSheet.create({
         borderRadius: 10
     }
 })
+
+function mapStateToProps(decks, {navigation}) {
+    return {
+        deck: decks[navigation.state.params.id],
+        navigation,
+        id: navigation.state.params.id
+    }
+}
+
+export default connect (mapStateToProps)(DeckDetail)

@@ -4,7 +4,6 @@ import DeckDetail from './DeckDetail'
 import TabNavigator from './TabNavigator'
 import AddCard from './AddCard'
 import Quiz from './Quiz'
-import Result from './Result'
 
 
 const StackNavigator = createStackNavigator({
@@ -20,15 +19,9 @@ const StackNavigator = createStackNavigator({
     },
     DeckDetail: {
         screen: DeckDetail,
-        navigationOptions: {
-            title: 'Deck Detail'
-        }
     },
     Quiz: {
         screen: Quiz,
-    },
-    Result: {
-        screen: Result,
     },
     
   });

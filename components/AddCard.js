@@ -1,25 +1,46 @@
 import React, { Component } from 'react'
 import {Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView} from 'react-native'
+import {connect} from 'react-redux'
+import {addCard} from '../actions'
 
 
-export default class AddCard extends Component {
+class AddCard extends Component {
+
+    static navigationOptions = ({navigation}) => {
+        const {id} = navigation.state.params
+        return {
+            title: `Add a card to ${id}`,     
+        }
+    }
+
     state = {
         question: '',
         answer: ''
     }
+
     onQuestionChange = (text) => {
         this.setState(() => ({
             question: text
         }))
     }
+
     onAnswerChange = (text) => {
         this.setState(() => ({
             answer: text
         }))
     }
+
     onSubmit = () => {
-        alert(JSON.stringify(this.state))
+        const card = {[this.state.question]: this.state.answer}
+        this.props.dispatch(addCard(this.props.id,card))
+        this.setState(() => ({
+            question: '',
+            answer: ''
+        }))
+        this.props.navigation.goBack()
+
     }
+
     render() {
         const {question, answer} = this.state
         return (
@@ -39,6 +60,7 @@ export default class AddCard extends Component {
                 <TouchableOpacity 
                     style={styles.submitButton}
                     onPress={this.onSubmit}
+                    disabled={question === '' || answer === ''}
                 >
                     <Text style={styles.secondryText}>Add Card</Text>
                 </TouchableOpacity>
@@ -77,3 +99,13 @@ const styles = StyleSheet.create({
         borderRadius: 10
     }
 })
+
+
+function mapStateToProps(decks, {navigation}) {
+    return {
+        id: navigation.state.params.id,
+        navigation
+    }
+}
+
+export default connect(mapStateToProps)(AddCard)

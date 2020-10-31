@@ -4,6 +4,7 @@ import AddDeck from './AddDeck'
 import Decks from './Decks'
 import {purple, darkPurple} from '../utils/colors'
 
+
 const TabNavigator = createMaterialTopTabNavigator({
     Decks: {
       screen: Decks,

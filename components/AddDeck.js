@@ -1,19 +1,32 @@
 import React, { Component } from 'react'
-import {View, Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView} from 'react-native'
+import {Keyboard, Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView} from 'react-native'
+import {addDeck} from '../actions'
+import {connect} from 'react-redux'
 
 
-export default class AddDeck extends Component {
+class AddDeck extends Component {
     state = {
         value: ''
     }
+
     onChange = (text) => {
         this.setState(() => ({
             value: text
         }))
     }
+
     onSubmit = () => {
-        alert(this.state.value)
+        // alert(this.state.value)
+        const name = this.state.value
+        const deck = {[name]:{}}
+        this.props.dispatch(addDeck(deck))
+        this.setState(() => ({
+            value: ''
+        }))
+        Keyboard.dismiss()
+        this.props.navigation.navigate('DeckDetail', {id:name})
     }
+    
     render() {
         const {value} = this.state
         return (
@@ -27,6 +40,7 @@ export default class AddDeck extends Component {
                 <TouchableOpacity 
                     style={styles.submitButton}
                     onPress={this.onSubmit}
+                    disabled={value === ''}
                 >
                     <Text style={styles.secondryText}>Create Deck</Text>
                 </TouchableOpacity>
@@ -68,3 +82,5 @@ const styles = StyleSheet.create({
         borderRadius: 10
     }
 })
+
+export default connect()(AddDeck)

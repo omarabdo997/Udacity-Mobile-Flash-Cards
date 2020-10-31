@@ -3,18 +3,20 @@ import {View, Text, TouchableOpacity, StyleSheet} from 'react-native'
 
 
 export default class Card extends Component {
+
     state = {
-        question:'What is this?',
-        answer: 'A pen',
         front: true
     }
+    
     onPress = () => {
         this.setState((currentState) => ({
             front: !currentState.front
         }))
     }
+
     render() {
-        const {question, answer, front} = this.state
+        const {question, answer} = this.props
+        const {front} = this.state
         return (
             <View style={styles.container}>
                 <Text style={styles.primaryText}>{front?question:answer}</Text>
@@ -25,6 +27,7 @@ export default class Card extends Component {
         )
     }
 }
+
 const styles = StyleSheet.create({
     container: {
        alignItems : 'center',
@@ -33,11 +36,14 @@ const styles = StyleSheet.create({
        
     },
     primaryText: {
-        fontSize: 50 
+        fontSize: 50,
+        alignSelf: 'center',
+        padding: 20 
     },
     secondaryText: {
         fontSize: 30,
-        color: 'grey'
+        color: 'grey',
+        alignSelf: 'center' 
 
     },
     

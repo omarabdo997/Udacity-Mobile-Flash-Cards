@@ -4,19 +4,27 @@ import {purple} from '../utils/colors'
 
 
 export default class Quiz extends Component {
+
     render() {
+        const {score, totalQuestions, goBack, restart} = this.props
         return (
             <View style={styles.container}>
                 <View >
                     <Text style={styles.scoreText}>You Scored</Text>
-                    <Text style={styles.resultText}>5/7</Text>
+                    <Text style={styles.resultText}>{score}/{totalQuestions}</Text>
                 </View>
                
                 <View >
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity 
+                        style={styles.button}
+                        onPress={restart}
+                    >
                         <Text style={styles.buttonText}>Restart Quiz</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity 
+                        style={styles.button}
+                        onPress={goBack}
+                    >
                         <Text style={styles.buttonText}>Back to Deck</Text>
                     </TouchableOpacity>
                 </View>

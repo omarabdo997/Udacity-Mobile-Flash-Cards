@@ -1,26 +1,28 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, StatusBar  } from 'react-native';
-import { purple, darkPurple } from './utils/colors'
+import { StyleSheet, View, StatusBar, AsyncStorage} from 'react-native';
+import { purple} from './utils/colors'
 import Navigator from './components/StackNavigator'
+import {createStore, applyMiddleware} from 'redux';
+import {Provider} from 'react-redux';
+import decks from './reducers'
+import thunk from 'redux-thunk'
 
 
+const store = createStore(decks,applyMiddleware(thunk))
 
-
-
-
-
-
-
+store.subscribe(() => {
+  AsyncStorage.setItem('decks', JSON.stringify(store.getState()))
+})
 
 export default class App extends Component {
   render() {
     return (
-
-        <View style={styles.container}>
-          <StatusBar backgroundColor={purple} barStyle='light-content'/>
-          <Navigator />
-          
-        </View>
+        <Provider store={store}>
+          <View style={styles.container}>
+            <StatusBar backgroundColor={purple} barStyle='light-content'/>
+            <Navigator />
+          </View>
+        </Provider>
 
       
     )
