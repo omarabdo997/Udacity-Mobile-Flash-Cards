@@ -5,6 +5,8 @@ The native project of Udacity React Nano degree this projects is a game where th
 
 The user plays the game by selecting start quiz option inside the deck view and starts answering the questions and getting a score.
 
+This project was developed using React Native and Redux.
+
 ## Installation and launching
 To install and run this project on your device you have to run the following commands after installing react native.
 
