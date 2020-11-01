@@ -10,19 +10,22 @@ class Quiz extends Component {
     state = {
         score: 0,
         answeredQuestions: 0,
+        front: true
 
     }
 
     correctAnswer = () => {
         this.setState((currentState) => ({
             answeredQuestions: currentState.answeredQuestions+1,
-            score: currentState.score+1
+            score: currentState.score+1,
+            front: true
         }))
     }
 
     incorrectAnswer = () => {
         this.setState((currentState) => ({
             answeredQuestions: currentState.answeredQuestions+1,
+            front: true
         }))
     }
 
@@ -37,9 +40,15 @@ class Quiz extends Component {
         }))
     }
 
+    toggleCardFace = () => {
+        this.setState((currentState) => ({
+            front: !currentState.front
+        }))
+    }
+
     render() {
-        const {deck, navigation} = this.props
-        const {score, answeredQuestions} = this.state
+        const {deck} = this.props
+        const {score, answeredQuestions, front} = this.state
         const keys = Object.keys(deck)
         const totalQuestions = keys.length
         
@@ -67,6 +76,8 @@ class Quiz extends Component {
                     <Card 
                         question={keys[answeredQuestions]}
                         answer={deck[keys[answeredQuestions]]}
+                        front={front}
+                        toggleCardFace= {this.toggleCardFace}
                     />
                 </View>
                
@@ -131,7 +142,6 @@ const styles = StyleSheet.create({
 function mapStateToProps(decks, {navigation}) {
     return {
         deck: decks[navigation.state.params.id],
-        navigation
     }
 }
 
